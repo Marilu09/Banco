@@ -30,6 +30,8 @@ def newCustomer (request):
 def getAllCustomers (request):
     if request.method == 'GET':
         customers = Costomer.objects.all()
+        if (not customers):
+            return HttpResponse("No hay clientes en la base de datos")
         allCustData = []
         for x in customers:
             data = {"id": x.id, "firstName": x.firstName, "lastName": x.lastName, "email": x.email}
@@ -46,6 +48,8 @@ def getAllCustomers (request):
 def getOneCustomer (request, id):
     if request.method == 'GET':
         customer = Costomer.objects.filter(id=id).first()
+        if (not customer):
+            return HttpResponse("No existe cliente con esa cedula")
         data = {"id": customer.id, "firstName": customer.firstName, "lastName": customer.lastName, "email": customer.email}
         dataJson = json.dumps(data)
         resp = HttpResponse()
